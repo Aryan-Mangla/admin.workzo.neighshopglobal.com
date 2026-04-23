@@ -461,14 +461,14 @@
                         <ul style="margin-left: 20px; margin-bottom: 15px;">
                             <li>Error: "Load failed" or "CORS policy" errors</li>
                             <li>Solution: Ensure backend server is running with CORS enabled</li>
-                            <li>Check: Backend should be accessible at http://localhost:5001</li>
+                            <li>Check: Backend should be accessible at https://workzo.mycartly.in/api</li>
                         </ul>
                         
                         <p><strong>2. Network Connectivity:</strong></p>
                         <ul style="margin-left: 20px; margin-bottom: 15px;">
                             <li>Error: "Failed to fetch" or connection refused</li>
                             <li>Solution: Start backend server with: <code>python3 app.py</code></li>
-                            <li>Check: Verify port 5001 is not blocked by firewall</li>
+                            <li>Check: Verify API endpoint is not blocked by firewall</li>
                         </ul>
                         
                         <p><strong>3. Database Connection:</strong></p>
@@ -498,7 +498,7 @@
                     <h3>🛠️ Troubleshooting Steps</h3>
                     <div style="text-align: left;">
                         <p><strong>Step 1: Check Backend Status</strong></p>
-                        <p>• Open terminal and run: <code>curl http://localhost:5001/user/categories</code></p>
+                        <p>• Open terminal and run: <code>curl https://workzo.mycartly.in/api/user/categories</code></p>
                         <p>• Should return JSON with categories list</p>
                         
                         <p><strong>Step 2: Check Frontend Status</strong></p>
@@ -529,6 +529,7 @@
     </div>
 
     <script>
+        const API_BASE_URL = 'https://workzo.mycartly.in/api';
         let currentStep = 1;
         let providerEmail = '';
         let serviceTypes = [];
@@ -672,7 +673,7 @@
             
             // Test 1: Backend connectivity
             try {
-                const response = await fetch('http://localhost:5001/user/categories', {
+                const response = await fetch(`${API_BASE_URL}/user/categories`, {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
                     mode: 'cors'
@@ -694,7 +695,7 @@
             
             // Test 2: CORS support
             try {
-                const response = await fetch('http://localhost:5001/user/categories', {
+                const response = await fetch(`${API_BASE_URL}/user/categories`, {
                     method: 'OPTIONS',
                     headers: { 'Content-Type': 'application/json' },
                     mode: 'cors'
@@ -715,7 +716,7 @@
             
             // Test 3: Service types endpoint
             try {
-                const response = await fetch('http://localhost:5001/user/categories');
+                const response = await fetch(`${API_BASE_URL}/user/categories`);
                 const data = await response.json();
                 
                 diagnostics.tests.serviceTypesEndpoint = {
@@ -836,7 +837,7 @@
         // Load service categories
         async function loadServiceTypes() {
             try {
-                const response = await fetch('http://localhost:5001/user/categories', {
+                const response = await fetch(`${API_BASE_URL}/user/categories`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -846,7 +847,7 @@
                 
                 if (!response.ok) {
                     const errorMsg = `HTTP error! status: ${response.status}`;
-                    logNetworkIssue('http://localhost:5001/user/categories', errorMsg, {
+                    logNetworkIssue(`${API_BASE_URL}/user/categories`, errorMsg, {
                         status: response.status,
                         statusText: response.statusText
                     });
@@ -969,7 +970,7 @@
             updateStepStatus('step1', 'in_progress');
             
             try {
-                const res = await fetch('http://localhost:5001/provider/send-otp', {
+                const res = await fetch(`${API_BASE_URL}/provider/send-otp`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -979,7 +980,7 @@
                 
                 if (!res.ok) {
                     const errorMsg = `HTTP error! status: ${res.status}`;
-                    logNetworkIssue('http://localhost:5001/provider/send-otp', errorMsg, {
+                    logNetworkIssue(`${API_BASE_URL}/provider/send-otp`, errorMsg, {
                         status: res.status,
                         statusText: res.statusText,
                         email: email
@@ -1035,7 +1036,7 @@
             loader.innerHTML = '<div class="loading"></div>';
             
             try {
-                const res = await fetch('http://localhost:5001/provider/verify-otp', {
+                const res = await fetch(`${API_BASE_URL}/provider/verify-otp`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -1163,14 +1164,14 @@
                     hasDocument: !!documentFile 
                 });
                 
-                const res = await fetch('http://localhost:5001/provider/register', {
+                const res = await fetch(`${API_BASE_URL}/provider/register`, {
                     method: 'POST',
                     body: formData
                 });
                 
                 if (!res.ok) {
                     const errorMsg = `HTTP error! status: ${res.status}`;
-                    logNetworkIssue('http://localhost:5001/provider/register', errorMsg, {
+                    logNetworkIssue(`${API_BASE_URL}/provider/register`, errorMsg, {
                         status: res.status,
                         statusText: res.statusText
                     });
